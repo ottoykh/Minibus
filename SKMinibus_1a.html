@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>西貢小巴 1A 下一班車</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" ></script>
+<style>
+body {padding:8px; font-family: Tahoma, Verdana, sans-serif; font-size:14px;}
+td, th {border: 1px solid #ddd;padding: 8px;}
+tr:nth-child(even){background-color: #f2f2f2;} 
+th {padding-top: 8px;padding-bottom: 8px;text-align: centre;background-color: #00bd3c;color: white;}
+th.n {font-size: 12px;}
+html, body {height: 100%;margin: 0;}
+.leaflet-container {width: 100%;height: 380px;}
+</style>
+</head>
+<body>
+<img src="https://kimchisir.com/wp-content/uploads/exam/137.png" height="50"> 新界小巴路線 1A 西貢碼頭 ↔ 新蒲崗(采頤花園)<br>
+New Territories Green Minibus Route 1A Sai Kung Pier ↔ San Po Kong (Choi Yee Garden)<br><br>
+<b>往 彩虹/新蒲崗 To Choi Hung/San Po Kong</b><br><i> 由西貢碼頭公共小巴總站 From Sai Kung Pier Public Minibus Terminus</i><table id="fetchDOWN"></table>
+	<br>
+<b>往 西貢 To Sai Kung</b><br><i>由新蒲崗公共運輸總站 (采頤花園) From San Po Kong Public Transport Terminus</i><table id="fetchUP"></table><br>
+	<table><tr><td>Page load in 頁面加載時間 : </td><td id="date"></td></tr></table><br>
+	<div id="map"></div>
+<script>
+fetch("https://data.etagmb.gov.hk/eta/route-stop/2002355/1/1").then(response => response.json())
+    .then(json => {
+    let timetable = `<tr><th>Next Bus 下一班車</th><th>狀態</th><th>Status</th></tr>`;
+    json["data"]["eta"].forEach(item => {
+        timetable += `<tr>
+        <td>${item["timestamp"]} </td> <td>${item["remarks_tc"]} </td>
+        <td>${item["remarks_en"]}</td></tr>`;
+    });
+    document.getElementById("fetchDOWN").innerHTML = timetable;
+});
+fetch("https://data.etagmb.gov.hk/eta/route-stop/2002355/2/1").then(response => response.json())
+    .then(json => {
+    let timetable = `<tr><th>Next Bus 下一班車</th><th>狀態</th><th>Status</th></tr>`;
+    json["data"]["eta"].forEach(item => {
+        timetable += `<tr>
+        <td>${item["timestamp"]} </td> <td>${item["remarks_tc"]} </td>
+        <td>${item["remarks_en"]}</td></tr>`;
+    });
+    document.getElementById("fetchUP").innerHTML = timetable;
+});
+const today = new Date();
+document.getElementById("date").innerHTML = today;
+</script>
+<script>
+var map = L.map('map').setView([22.355, 114.24], 13);
+var osm = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {minZoom: 13,maxZoom: 18,attribution:''}).addTo(map);
+var M=L.icon({iconUrl:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScIh1EFBz3ifLR2GslSxIHUhsgHye5at0emcCuBiSXuoQPW74ij76rTzfRf993PJcw7po&usqp=CAU',iconSize:[20,20]}); 
+L.marker([22.38180149,114.2737018],{icon:M}).bindPopup('西貢碼頭公共小巴總站 (西貢碼頭) ').addTo(map);L.marker([22.38338474,114.2717476],{icon:M}).bindPopup('福民路').addTo(map);L.marker([22.38317992,114.2714033],{icon:M}).bindPopup('普通道 (西貢賽馬會大會堂)').addTo(map);L.marker([22.38088995,114.2688857],{icon:M}).bindPopup('西貢公路 (翠塘花園)').addTo(map);L.marker([22.3777786,114.2649447],{icon:M}).bindPopup('西貢公路 (菠蘿輋)').addTo(map);L.marker([22.37522412,114.2614418],{icon:M}).bindPopup('西貢公路 (北港)').addTo(map);L.marker([22.36383203,114.2589497],{icon:M}).bindPopup('西貢公路 (白沙灣)').addTo(map);L.marker([22.35822134,114.2521416],{icon:M}).bindPopup('西貢公路 (匡湖居)').addTo(map);L.marker([22.35346744,114.2494743],{icon:M}).bindPopup('西貢公路 (南邊圍)').addTo(map);L.marker([22.35235782,114.2512911],{icon:M}).bindPopup('西貢公路 (響鐘)').addTo(map);L.marker([22.35221863,114.2531146],{icon:M}).bindPopup('西貢公路 (南圍)').addTo(map);L.marker([22.34301027,114.2571783],{icon:M}).bindPopup('新界西貢坑口區鄭植之中學').addTo(map);L.marker([22.339666,114.246732],{icon:M}).bindPopup('清水灣道 壁屋').addTo(map);L.marker([22.33409868,114.2380091],{icon:M}).bindPopup('清水灣道 井欄樹  ').addTo(map);L.marker([22.33380908,114.2210303],{icon:M}).bindPopup('清水灣道 德望學校').addTo(map);L.marker([22.33449046,114.2138155],{icon:M}).bindPopup('清水灣道 彩雲商場').addTo(map);L.marker([22.33420802,114.2098742],{icon:M}).bindPopup('清水灣道 港鐵彩虹站 ').addTo(map);L.marker([22.33696438,114.2062771],{icon:M}).bindPopup('龍翔道彩虹邨紅萼樓').addTo(map);L.marker([22.33744726,114.2017612],{icon:M}).bindPopup('彩頤里').addTo(map);L.marker([22.33829802,114.2016813],{icon:M}).bindPopup('新蒲崗公共運輸總站 (采頤花園)').addTo(map);
+</script>
+</body>
+</html>
